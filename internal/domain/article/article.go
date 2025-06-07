@@ -30,12 +30,14 @@ func NewArticle(
 
 func (a *Article) SetTitle(title string) error {
 	a.title = title
+	a.updatedAt = time.Now()
 
 	return nil
 }
 
 func (a *Article) SetContent(content string) error {
 	a.content = content
+	a.updatedAt = time.Now()
 
 	return nil
 }
