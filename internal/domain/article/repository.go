@@ -16,4 +16,5 @@ type Repository interface {
 	List(ctx context.Context) ([]Article, error)
 	Store(ctx context.Context, a Article) error
 	Update(ctx context.Context, id uuid.UUID, update func(*Article) error) error
+	Delete(ctx context.Context, id uuid.UUID) error
 }

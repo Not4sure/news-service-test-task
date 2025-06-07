@@ -73,3 +73,16 @@ func (r *Repository) Update(ctx context.Context, id uuid.UUID, update func(*arti
 	r.articles[id] = a
 	return nil
 }
+
+// Delete implements article.Repository.
+func (r *Repository) Delete(ctx context.Context, id uuid.UUID) error {
+	r.Lock()
+	defer r.Unlock()
+
+	if _, ok := r.articles[id]; !ok {
+		return article.ErrArticleNotFound
+	}
+
+	delete(r.articles, id)
+	return nil
+}
