@@ -12,7 +12,8 @@ var (
 )
 
 type Repository interface {
-	ByID(ctx context.Context, id uuid.UUID) (Article, error)
+	GetByID(ctx context.Context, id uuid.UUID) (Article, error)
 	List(ctx context.Context) ([]Article, error)
 	Store(ctx context.Context, a Article) error
+	Update(ctx context.Context, id uuid.UUID, update func(*Article) error) error
 }
