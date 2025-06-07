@@ -1,0 +1,38 @@
+<article
+  class="card w-sm bg-base-100 shadow-lg border-2 border-gray-500"
+  id="article-{{.ID}}"
+>
+  <div class="card-body p-4">
+    <div class="flex justify-between gap-2">
+      <div>
+        <h2 class="card-title self-left">{{.Title}}</h2>
+      </div>
+      <div>
+        <button 
+          hx-delete="/article/{{.ID}}"
+          hx-swap="outerHTML"
+          hx-target="#article-{{.ID}}"
+          class="btn btn-outline btn-error btn-sm"
+        >
+          Delete
+        </button>
+        <button
+          hx-get="/article/{{.ID}}/editor"
+          hx-swap="outerHTML"
+          hx-target="#article-{{.ID}}"
+          class="btn btn-outline btn-primary btn-sm"
+        >
+          Edit
+        </button>
+      </div>
+    </div>
+    <div class="divider mx-[-18px] my-0 border-color-gray-400"></div>
+    <div>
+      <p>{{.Content}}</p>
+      <div class="flex">
+        <h3>{{.CreatedAt}}</h3>
+        <h3>{{.UpdatedAt}}</h3>
+      </div>
+    </div>
+  </div>
+</article>
