@@ -7,7 +7,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func (hs *HTMXServer) ArticleEditorHandler(w http.ResponseWriter, r *http.Request) {
+func (hs *HTMXServer) ArticleEditFormHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("editing article")
 
 	uid, err := uuid.Parse(r.PathValue("id"))
@@ -17,7 +17,7 @@ func (hs *HTMXServer) ArticleEditorHandler(w http.ResponseWriter, r *http.Reques
 	}
 
 	a, err := hs.app.GetByID(r.Context(), uid)
-	err = hs.templates.ExecuteTemplate(w, "article-editor.html", a)
+	err = hs.templates.ExecuteTemplate(w, "article-edit-form.html", a)
 
 	if err != nil {
 		fmt.Println(err)
