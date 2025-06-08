@@ -9,8 +9,8 @@ import (
 // Article represents news article in the system
 type Article struct {
 	id        uuid.UUID
-	title     string
-	content   string
+	title     Title
+	content   Content
 	createdAt time.Time
 	updatedAt time.Time
 }
@@ -19,11 +19,20 @@ func NewArticle(
 	title string,
 	content string,
 ) (*Article, error) {
-	// TODO: add title and content validation
+	t, err := NewTitle(title)
+	if err != nil {
+		return nil, err
+	}
+
+	c, err := NewContent(content)
+	if err != nil {
+		return nil, err
+	}
+
 	return &Article{
 		id:        uuid.New(),
-		title:     title,
-		content:   content,
+		title:     t,
+		content:   c,
 		createdAt: time.Now(),
 	}, nil
 }
@@ -44,7 +53,12 @@ func MustNewArticle(
 
 // SetTitle updates title of an article.
 func (a *Article) SetTitle(title string) error {
-	a.title = title
+	t, err := NewTitle(title)
+	if err != nil {
+		return err
+	}
+
+	a.title = t
 	a.updatedAt = time.Now()
 
 	return nil
@@ -52,7 +66,12 @@ func (a *Article) SetTitle(title string) error {
 
 // SetContent updates content of an article.
 func (a *Article) SetContent(content string) error {
-	a.content = content
+	c, err := NewContent(content)
+	if err != nil {
+		return err
+	}
+
+	a.content = c
 	a.updatedAt = time.Now()
 
 	return nil
@@ -65,12 +84,12 @@ func (a Article) ID() uuid.UUID {
 
 // Title of article.
 func (a Article) Title() string {
-	return a.title
+	return a.title.String()
 }
 
 // Content of article.
 func (a Article) Content() string {
-	return a.content
+	return a.content.String()
 }
 
 // CreatedAt is a creation date of article.
