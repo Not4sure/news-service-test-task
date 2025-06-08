@@ -1,0 +1,26 @@
+<div class="
+  w-full
+  grid
+  text-md
+  [&>textarea]:text-inherit
+  after:text-inherit
+  [&>textarea]:resize-none
+  [&>textarea]:overflow-hidden
+  [&>textarea]:[grid-area:1/1/2/2]
+  after:[grid-area:1/1/2/2]
+  after:whitespace-pre-wrap
+  after:invisible
+  after:content-[attr(data-cloned-val)_'_']
+  after:border
+  after:text-inherit
+  "
+  data-cloned-val="{{.Value}}"
+>
+  <textarea
+    class="text-md w-full border-none bg-base-100 appearance-none outline-none"
+    name="{{.Name}}"
+    rows="1"
+    onInput="this.parentNode.dataset.clonedVal = this.value"
+    placeholder="{{.Placeholder}}" 
+  >{{.Value}}</textarea>
+</div>

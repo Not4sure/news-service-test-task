@@ -18,7 +18,18 @@ type HTMXServer struct {
 
 func NewHTMXServer(application app.Application) HTMXServer {
 	// TODO: handle error
-	templates := template.Must(template.ParseFS(views, "views/*"))
+	tmpl := template.New("").Funcs(template.FuncMap{
+		"dict": func(values ...any) map[string]any {
+			dict := make(map[string]any)
+			for i := 0; i < len(values); i += 2 {
+				key := values[i].(string)
+				dict[key] = values[i+1]
+			}
+			return dict
+		},
+	})
+
+	templates := template.Must(tmpl.ParseFS(views, "views/*"))
 
 	return HTMXServer{
 		app:       application,

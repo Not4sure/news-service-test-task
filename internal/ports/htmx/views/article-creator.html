@@ -2,22 +2,20 @@
   hx-post="/article"
   hx-target="this"
   hx-swap="outerHTML"
+  id="creator"
 >
   <article
     class="card w-sm bg-base-100 shadow-lg border-2 border-gray-500"
-    id="article-{{.ID}}"
   >
     <div class="card-body p-4">
-      <div class="flex justify-between gap-2">
-        <textarea 
-            class="textarea textarea-ghost card-title self-left text-wrap w-full"
-            type="text"
-            name="title"
-            placeholder="Title"
-        >{{.Title}}</textarea>
+      <div class="flex gap-2">
+        <div class="card-title grow">
+          {{template "text-editor.html" (dict "Name" "title" "Placeholder" "Title" "Value" "")}}
+        </div>
         <div class="flex flex-wrap gap-2">
           <button
             class="btn btn-outline btn-sm btn-error flex-grow"
+            hx-on:click='document.getElementById("creator").remove()'
           >
             Cancel
           </button>
@@ -30,13 +28,8 @@
       </div>
       <div class="divider mx-[-18px] my-0 border-color-gray-400"></div>
       <div>
-          <textarea 
-            class="textarea textarea-ghost w-full"
-            type="text"
-            name="content"
-            placeholder="Content"
-          >{{.Content}}</textarea>
-        </div>
+        {{template "text-editor.html" (dict "Name" "content" "Placeholder" "Input some text" "Value" "")}}
+      </div>
     </div>
   </article>
 </form>
