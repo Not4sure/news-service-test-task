@@ -20,7 +20,23 @@
     ></script>
 </head>
 <body>
-    <div class="grid grid-rows-4 align-center justify-center gap-5 px-64">
+    <header>
+      <div class="bg-base-300 flex justify-between p-4 mb-0">
+        <h1 class="self-center text-lg">News Service</h1>
+        <button 
+          class="btn btm-outline btn-primary"
+          hx-get="/article/create-form"
+          hx-target="#articles-list"
+          hx-swap="afterbegin"
+        >
+          New article
+        </button>
+      </div>
+    </header>
+    <div 
+      id="articles-list"
+      class="flex flex-col align-center justify-center gap-5 mx-[5%] lg:mx-80 my-4"
+    >
       {{range .Articles}}
         {{template "article-card.html" .}}
       {{end}}

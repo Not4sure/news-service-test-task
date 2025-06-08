@@ -2,7 +2,6 @@ package htmx
 
 import (
 	"embed"
-	"fmt"
 	"html/template"
 	"net/http"
 
@@ -32,11 +31,13 @@ func (hs *HTMXServer) RegisterRoutes(router *http.ServeMux) {
 
 	router.HandleFunc("GET /article/{id}/editor", hs.ArticleEditorHandler)
 
-	router.HandleFunc("POST /article", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("creating article")
-	})
+	router.HandleFunc("GET /article/create-form", hs.ArticleCreatorHandler)
+
+	router.HandleFunc("POST /article", hs.ArticleCreateHandler)
 
 	router.HandleFunc("PUT /article/{id}", hs.ArticleUpdateHandler)
+
+	router.HandleFunc("GET /article/{id}", hs.ArticleGetHandler)
 
 	router.HandleFunc("DELETE /article/{id}", hs.ArticleDeleteHandler)
 }

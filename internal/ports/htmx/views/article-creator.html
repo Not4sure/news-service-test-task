@@ -1,5 +1,5 @@
 <form
-  hx-put="/article/{{.ID}}"
+  hx-post="/article"
   hx-target="this"
   hx-swap="outerHTML"
 >
@@ -18,15 +18,13 @@
         <div class="flex flex-wrap gap-2">
           <button
             class="btn btn-outline btn-sm btn-error flex-grow"
-            hx-get="/article/{{.ID}}"
-            hx-confirm="Cancel editing article? All changes will be lost"
           >
             Cancel
           </button>
           <button
             class="btn btn-outline btn-sm btn-primary flex-grow"
           >
-            Save
+            Create
           </button>
         </div>
       </div>

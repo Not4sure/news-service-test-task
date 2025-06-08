@@ -17,6 +17,24 @@ func New(articleRepo article.Repository) Application {
 	}
 }
 
+func (app *Application) CreateArticle(
+	ctx context.Context,
+	title string,
+	content string,
+) (vvm ArticleViewModel, err error) {
+	a, err := article.NewArticle(title, content)
+	if err != nil {
+		return ArticleViewModel{}, err
+	}
+
+	err = app.repo.Store(ctx, *a)
+	if err != nil {
+		return ArticleViewModel{}, err
+	}
+
+	return viewModelFromDomainArticle(*a), nil
+}
+
 func (app *Application) ListArticles(ctx context.Context) (vvm []ArticleViewModel, err error) {
 	aa, err := app.repo.List(ctx)
 	if err != nil {
