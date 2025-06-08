@@ -38,7 +38,7 @@ func NewArticle(
 }
 
 // MustNewArticle creates article or panics on error.
-// Intended for use in testing.
+// Intended for usage in tests.
 func MustNewArticle(
 	title string,
 	content string,
@@ -49,6 +49,34 @@ func MustNewArticle(
 	}
 
 	return a
+}
+
+// UnmarhalFromDatabase reconstructs Article from fields.
+// Don't use this func for creation of new entities.
+func UnmarhalFromDatabase(
+	id uuid.UUID,
+	title string,
+	content string,
+	createdAt time.Time,
+	updatedAt time.Time,
+) (Article, error) {
+	t, err := NewTitle(title)
+	if err != nil {
+		return Article{}, err
+	}
+
+	c, err := NewContent(content)
+	if err != nil {
+		return Article{}, err
+	}
+
+	return Article{
+		id:        id,
+		title:     t,
+		content:   c,
+		createdAt: createdAt,
+		updatedAt: updatedAt,
+	}, nil
 }
 
 // SetTitle updates title of an article.
