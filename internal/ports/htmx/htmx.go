@@ -38,6 +38,7 @@ func NewHTMXServer(application app.Application) HTMXServer {
 }
 
 func (hs *HTMXServer) RegisterRoutes(router *http.ServeMux) {
+
 	router.HandleFunc("GET /", hs.HandleMainPage)
 
 	router.HandleFunc("GET /article/{id}/edit", hs.ArticleEditFormHandler)

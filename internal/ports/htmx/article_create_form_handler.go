@@ -8,8 +8,6 @@ import (
 )
 
 func (hs *HTMXServer) ArticleCreateFormHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("create article form")
-
 	err := hs.templates.ExecuteTemplate(w, "article-create-form.html", app.ArticleViewModel{})
 
 	if err != nil {

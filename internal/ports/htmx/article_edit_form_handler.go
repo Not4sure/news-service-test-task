@@ -8,8 +8,6 @@ import (
 )
 
 func (hs *HTMXServer) ArticleEditFormHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("editing article")
-
 	uid, err := uuid.Parse(r.PathValue("id"))
 	if err != nil {
 		http.Error(w, "invalid id", http.StatusBadRequest)

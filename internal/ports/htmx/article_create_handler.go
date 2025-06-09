@@ -6,8 +6,6 @@ import (
 )
 
 func (hs *HTMXServer) ArticleCreateHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("creating article")
-
 	err := r.ParseForm()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)

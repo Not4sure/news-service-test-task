@@ -11,6 +11,7 @@ import (
 
 func main() {
 	ctx := context.Background()
+
 	application := service.NewApplication(ctx)
 
 	server.RunServer(func(router *http.ServeMux) {

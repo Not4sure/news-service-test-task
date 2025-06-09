@@ -1,7 +1,6 @@
 package htmx
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -9,7 +8,6 @@ import (
 )
 
 func (hs *HTMXServer) ArticleDeleteHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("deleting article")
 	uid, err := uuid.Parse(r.PathValue("id"))
 	if err != nil {
 		http.Error(w, "invalid id", http.StatusBadRequest)
