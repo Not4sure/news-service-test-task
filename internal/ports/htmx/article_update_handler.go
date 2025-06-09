@@ -25,6 +25,11 @@ func (hs *HTMXServer) ArticleUpdateHandler(w http.ResponseWriter, r *http.Reques
 	content := r.Form.Get("content")
 
 	a, err := hs.app.UpdateArticle(r.Context(), uid, title, content)
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
 
 	err = hs.templates.ExecuteTemplate(w, "article-card.html", a)
 

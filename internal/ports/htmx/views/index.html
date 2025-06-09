@@ -18,6 +18,23 @@
       integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw"
       crossorigin="anonymous"
     ></script>
+    <!-- script to display dates in local timezone -->
+    <script defer>
+      function formatLocalTimes() {
+        document.querySelectorAll("time.local-time").forEach(el => {
+          const dt = new Date(el.getAttribute("datetime"));
+          const hours = dt.getHours().toString().padStart(2, '0');
+          const minutes = dt.getMinutes().toString().padStart(2, '0');
+         
+          el.textContent = `${hours}:${minutes}`;
+        });
+      }
+    
+      document.addEventListener("DOMContentLoaded", () => {
+        formatLocalTimes();
+        document.body.addEventListener("htmx:afterSettle", formatLocalTimes);
+      });
+    </script>
 </head>
 <body>
     <header class="

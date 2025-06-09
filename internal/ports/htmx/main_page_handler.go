@@ -14,6 +14,7 @@ type articlesCollection struct {
 func (hs *HTMXServer) HandleMainPage(w http.ResponseWriter, r *http.Request) {
 	articles, err := hs.app.ListArticles(r.Context())
 	if err != nil {
+		fmt.Println(err)
 		http.Error(w, "failed to list articles", http.StatusInternalServerError)
 	}
 
