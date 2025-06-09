@@ -2,13 +2,60 @@ package article_test
 
 import (
 	"context"
+	"fmt"
+	"log"
 	"testing"
+	"time"
 
 	"github.com/not4sure/news-service-test-task/internal/domain/article"
 	"github.com/not4sure/news-service-test-task/internal/domain/article/memory"
+	"github.com/not4sure/news-service-test-task/internal/domain/article/mongo"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"github.com/testcontainers/testcontainers-go/modules/mongodb"
 )
+
+var (
+	mongoURI string
+)
+
+// TestMain starts docker container with mongodb for
+func TestMain(m *testing.M) {
+	ctx := context.Background()
+
+	terminate, err := startMongoContainer(ctx)
+	defer terminate(ctx)
+	if err != nil {
+		log.Fatalf("cannot start mongodb conainer: %e", err)
+	}
+
+	m.Run()
+}
+
+func startMongoContainer(ctx context.Context) (func(context.Context) error, error) {
+	dbContainer, err := mongodb.Run(ctx, "mongo:latest")
+	if err != nil {
+		return nil, err
+	}
+
+	terminate := func(ctx context.Context) error {
+		return dbContainer.Terminate(ctx)
+	}
+
+	dbHost, err := dbContainer.Host(ctx)
+	if err != nil {
+		return terminate, err
+	}
+
+	dbPort, err := dbContainer.MappedPort(ctx, "27017/tcp")
+	if err != nil {
+		return terminate, err
+	}
+
+	mongoURI = fmt.Sprintf("mongodb://%s:%s", dbHost, dbPort)
+
+	return terminate, err
+}
 
 func TestRepository(t *testing.T) {
 
@@ -56,6 +103,7 @@ func testStoreArticle(t *testing.T, repo article.Repository) {
 	}
 }
 
+// assertArticleInRepository checks if article is stored in repository
 func assertArticleInRepository(ctx context.Context, t *testing.T, repo article.Repository, a *article.Article) {
 	articleFromRepo, err := repo.GetByID(ctx, a.ID())
 	require.NoError(t, err)
@@ -63,8 +111,8 @@ func assertArticleInRepository(ctx context.Context, t *testing.T, repo article.R
 	assert.Equal(t, a.ID(), articleFromRepo.ID())
 	assert.Equal(t, a.Title(), articleFromRepo.Title())
 	assert.Equal(t, a.Content(), articleFromRepo.Content())
-	assert.Equal(t, a.CreatedAt(), articleFromRepo.CreatedAt())
-	assert.Equal(t, a.UpdatedAt(), articleFromRepo.UpdatedAt())
+	assert.WithinDuration(t, a.CreatedAt(), articleFromRepo.CreatedAt(), time.Second)
+	assert.WithinDuration(t, a.UpdatedAt(), articleFromRepo.UpdatedAt(), time.Second)
 }
 
 // newValidArticle creates valid article with random values.
@@ -86,5 +134,16 @@ func createRepositories() []repo {
 			Name:       "Memory",
 			Repository: memory.New(),
 		},
+		{
+			Name:       "Mongodb",
+			Repository: mustNewMongoRepository(),
+		},
 	}
+}
+
+func mustNewMongoRepository() article.Repository {
+	ctx := context.Background()
+	repo := mongo.New(ctx, mongoURI, "news")
+
+	return repo
 }
