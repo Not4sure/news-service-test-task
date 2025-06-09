@@ -1,11 +1,21 @@
 package server
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+	"os"
+)
 
 type RegisterFn func(router *http.ServeMux)
 
 func RunServer(register RegisterFn) {
-	RunServerOnAddr(":8080", register)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	addr := fmt.Sprintf(":%s", port)
+	RunServerOnAddr(addr, register)
 }
 
 func RunServerOnAddr(addr string, register RegisterFn) {
