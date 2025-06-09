@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/not4sure/news-service-test-task/internal/domain/article"
 	"github.com/not4sure/news-service-test-task/internal/domain/article/mongo/filter"
-	"go.mongodb.org/mongo-driver/bson"
+	"github.com/not4sure/news-service-test-task/internal/domain/article/mongo/sort"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -76,9 +76,10 @@ func (mr MongoRepository) GetByID(ctx context.Context, id uuid.UUID) (article.Ar
 
 // List implements article.Repository.
 func (mr MongoRepository) List(ctx context.Context) (aa []article.Article, err error) {
-	filter := bson.D{}
+	opts := options.Find()
+	opts.Sort = sort.ByCreatedAt(sort.GreaterFirst)
 
-	cur, err := mr.articles().Find(ctx, filter, nil)
+	cur, err := mr.articles().Find(ctx, filter.All(), opts)
 	if err != nil {
 		return
 	}
