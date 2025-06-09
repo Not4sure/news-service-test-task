@@ -12,8 +12,13 @@ or
 docker-compose up -d 
 ```
 
-To access application open 
+To access application, open 
 `http://localhost:8080`
+
+To stop application, run 
+```
+make stop
+```
 
 ## Architecture and general structure
 This application's is heavily inspired by Domain Driven Design principles 
@@ -41,7 +46,11 @@ This calls for implemetation of configurable ArticleFactory which accepts valida
 
 Some form of pagination should be added to List() Articles.
 
-## What I'm prod of in this application
+Db integrations tests are triggered with unit tests. This is not a problem for this project, but as integration 
+tests got bigger and more costly to run, they should be separated from unit tests.
+
+## What I'm proud of in this application
 Firstly, general project structure.
 
-Secondly, with my minimal experience with frontend and no prior experience with htmx, quite not bad frontend ui and ux.
+Secondly, with my minimal experience with frontend and no prior experience with htmx, quite not bad frontend ui and ux,
+especially with article edit form which appears seamlessly after "Edit" button is pushed.
