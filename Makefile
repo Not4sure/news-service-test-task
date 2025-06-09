@@ -11,6 +11,14 @@ build:
 run:
 	@go run cmd/app/main.go
 
+.PHONY: start
+start:
+	@docker-compose up -d
+
+.PHONY: stop
+stop:
+	@docker-compose down
+
 # Test the application
 .PHONY: test
 test:

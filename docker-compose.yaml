@@ -1,9 +1,19 @@
 
 services:
+  app:
+    build: .
+    environment:
+      PORT: 8080
+      MONGO_HOST: mongodb
+      MONGO_PORT: 27017
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DATABASE: news
+    ports:
+      - 8080:8080
+
   mongodb:
     image: mongo:latest
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
-    ports:
-      - ${MONGO_PORT}:27017

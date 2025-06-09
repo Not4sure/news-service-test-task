@@ -21,7 +21,7 @@ func Load(path string) (config Config, err error) {
 
 	err = readConfigFile(path)
 	if err != nil {
-		return
+		viper.AutomaticEnv()
 	}
 
 	err = viper.Unmarshal(&config)
