@@ -1,7 +1,6 @@
 package htmx
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -25,15 +24,12 @@ func (hs *HTMXServer) ArticleUpdateHandler(w http.ResponseWriter, r *http.Reques
 
 	a, err := hs.app.UpdateArticle(r.Context(), uid, title, content)
 	if err != nil {
-		fmt.Println(err)
-		http.Error(w, "internal error", http.StatusInternalServerError)
+		hs.handleAppErr(err, w)
 		return
 	}
 
 	err = hs.templates.ExecuteTemplate(w, "article-card.html", a)
-
 	if err != nil {
-		fmt.Println(err)
 		http.Error(w, "internal error", http.StatusInternalServerError)
 	}
 }

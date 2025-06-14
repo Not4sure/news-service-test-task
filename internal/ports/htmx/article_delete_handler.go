@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/google/uuid"
-	"github.com/not4sure/news-service-test-task/internal/domain/article"
 )
 
 func (hs *HTMXServer) ArticleDeleteHandler(w http.ResponseWriter, r *http.Request) {
@@ -16,12 +15,7 @@ func (hs *HTMXServer) ArticleDeleteHandler(w http.ResponseWriter, r *http.Reques
 
 	err = hs.app.DeleteArticle(r.Context(), uid)
 	if err != nil {
-		if err == article.ErrArticleNotFound {
-			http.Error(w, "article not found", http.StatusNotFound)
-			return
-		}
-
-		http.Error(w, "internal error", http.StatusInternalServerError)
+		hs.handleAppErr(err, w)
 		return
 	}
 

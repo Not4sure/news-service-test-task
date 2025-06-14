@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/not4sure/news-service-test-task/internal/app"
+	"github.com/not4sure/news-service-test-task/internal/domain/article"
 )
 
 // HTMXServer serves htmx view for application
@@ -40,4 +41,17 @@ func (hs *HTMXServer) RegisterRoutes(router *http.ServeMux) {
 	router.HandleFunc("GET /article/{id}", hs.ArticleGetHandler)
 
 	router.HandleFunc("DELETE /article/{id}", hs.ArticleDeleteHandler)
+}
+
+func (hs *HTMXServer) handleAppErr(err error, w http.ResponseWriter) {
+	if err == nil {
+		return
+	}
+
+	if err == article.ErrArticleNotFound {
+		http.Error(w, "article not found", http.StatusNotFound)
+		return
+	}
+
+	http.Error(w, "failed to list articles", http.StatusInternalServerError)
 }

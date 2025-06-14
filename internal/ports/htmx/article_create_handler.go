@@ -1,7 +1,6 @@
 package htmx
 
 import (
-	"fmt"
 	"net/http"
 )
 
@@ -17,14 +16,12 @@ func (hs *HTMXServer) ArticleCreateHandler(w http.ResponseWriter, r *http.Reques
 
 	a, err := hs.app.CreateArticle(r.Context(), title, content)
 	if err != nil {
-		fmt.Println(err)
-		http.Error(w, "internal error", http.StatusInternalServerError)
+		hs.handleAppErr(err, w)
+		return
 	}
 
 	err = hs.templates.ExecuteTemplate(w, "article-card.html", a)
-
 	if err != nil {
-		fmt.Println(err)
 		http.Error(w, "internal error", http.StatusInternalServerError)
 	}
 }

@@ -1,7 +1,6 @@
 package htmx
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/not4sure/news-service-test-task/internal/app"
@@ -14,14 +13,13 @@ type articlesCollection struct {
 func (hs *HTMXServer) HandleMainPage(w http.ResponseWriter, r *http.Request) {
 	articles, err := hs.app.ListArticles(r.Context())
 	if err != nil {
-		fmt.Println(err)
-		http.Error(w, "failed to list articles", http.StatusInternalServerError)
+		hs.handleAppErr(err, w)
+		return
 	}
 
 	err = hs.templates.ExecuteTemplate(w, "index.html", articlesCollection{Articles: articles})
-
 	if err != nil {
-		fmt.Println(err)
 		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
 	}
 }
