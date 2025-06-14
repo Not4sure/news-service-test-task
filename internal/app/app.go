@@ -89,6 +89,6 @@ func (app *Application) UpdateArticle(
 	return viewModelFromDomainArticle(a), nil
 }
 
-func (app *Application) Delete(ctx context.Context, id uuid.UUID) error {
+func (app *Application) DeleteArticle(ctx context.Context, id uuid.UUID) error {
 	return app.repo.Delete(ctx, id)
 }

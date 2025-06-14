@@ -11,6 +11,10 @@ build:
 run:
 	@go run cmd/app/main.go
 
+.PHONY: start-mongo
+start-mongo:
+	@docker-compose -f docker-compose.mongo.yaml up -d
+
 .PHONY: start
 start:
 	@docker-compose up -d

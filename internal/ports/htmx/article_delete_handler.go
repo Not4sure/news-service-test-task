@@ -14,7 +14,7 @@ func (hs *HTMXServer) ArticleDeleteHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	err = hs.app.Delete(r.Context(), uid)
+	err = hs.app.DeleteArticle(r.Context(), uid)
 	if err != nil {
 		if err == article.ErrArticleNotFound {
 			http.Error(w, "article not found", http.StatusNotFound)
